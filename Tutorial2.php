@@ -7,8 +7,7 @@ $string = file_get_contents('CalgarySchools.geojson');
 
 $json = json_decode($string, true);
 
-//print_r($json);
-
+echo "School information accessed as array elements:<br><br>";
 foreach($json['features'] as $key){
 echo $key['properties']['BOARD'];
 echo "<br>";
@@ -22,9 +21,18 @@ echo "<br>";
 echo $key['properties']['ADDRESS'];
 echo "<br>";
 
+echo $key['properties']['CITY']." ".$key['properties']['PROVINCE']." ".$key['properties']['POSTAL_COD']."<br>";
+
+echo "Coordinates: ";
+echo $key['geometry']['coordinates'][0].",".$key['geometry']['coordinates'][0]."<br>";
+
 echo "<br>";
 }
 
+echo "Back to JSON: <br>";
+echo json_encode($json);
+
+/*
 switch (json_last_error()) {
         case JSON_ERROR_NONE:
             echo ' - No errors';
@@ -50,7 +58,7 @@ switch (json_last_error()) {
     }
 
     echo PHP_EOL;
-
+*/
 ?>
 
 </body>
