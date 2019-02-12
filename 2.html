@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <button id="JSONButton" type="button" onclick="loadCalgarySchools()">
+            Show CalgarySchools JSON</button>
+        <div id="getJSON"></div>
+
+    <script>
+    function loadCalgarySchools() {
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                if (document.getElementById("getJSON").innerHTML !== "") {
+                    document.getElementById("getJSON").innerHTML = "";
+                    document.getElementById("JSONButton").innerHTML = "Show CalgarySchools JSON";
+                } else {
+                    document.getElementById("getJSON").innerHTML = this.responseText;
+                    document.getElementById("JSONButton").innerHTML = "Hide CalgarySchools JSON";
+                }
+            }
+        };
+
+        xhttp.open("GET", "1.php", true);
+        xhttp.send();
+    }
+    </script>
+
+    </body>
+</html>

@@ -30,6 +30,7 @@ foreach($calgaryschools as $key => $value)
     }
 }
 
-file_put_contents("CalgarySchoolsRemade.geojson", json_encode($calgaryschools_array));
+// file_put_contents("CalgarySchoolsRemade.geojson", json_encode($calgaryschools_array));
+var_dump($calgaryschools);
 
 ?>
