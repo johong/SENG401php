@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<h2>Enter coordinates of two points:</h2>
+<script>
+function validateForm() {
+  var p1 = document.forms["myForm"]["Point1"].value;
+  var p2 = document.forms["myForm"]["Point1"].value;
+  if (p1 == "" || p2 == "") {
+    alert("Both points must be filled out");
+    return false;
+  } 
+}
+</script>
+</head>
+
+<body>
+<form name="myForm" action="/haversine.php" onsubmit="return validateForm()" method="post">
+    Point 1:<br>
+  <input type="text" name="Point1">
+  <br>
+  Point 2:<br>
+  <input type="text" name="Point2">
+  <br><br>
+  <input type="Submit" value="Find Distance">
+</form>
+
+<p></p>
+
+</body>
+</html>
