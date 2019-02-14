@@ -86,10 +86,10 @@
         getQuadrant($x1, $y1);
         getQuadrant($x2, $y2);
         $bearingDegrees = getBearing($x1, $x2, $y1, $y2);
-        echo "The bearing between points ($x1, $y1) and ($x2, $y2) is $bearingDegrees<br/>";
+        echo "The bearing between points ($x1, $y1) and ($x2, $y2) is $bearingDegrees degrees<br/>";
 
         $haverSineDistance = getCircleDistance($x1, $x2, $y1, $y2);
-        echo "The gerat circle distance between ($x1, $y1) and ($x2, $y2) is $haverSineDistance<br/>";
+        echo "The gerat circle distance between ($x1, $y1) and ($x2, $y2) is $haverSineDistance km<br/>";
     }
 
 ?>

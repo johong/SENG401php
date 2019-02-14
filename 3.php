@@ -57,6 +57,8 @@ array_to_xml($calgaryschools_array, $xml_user_info);
 //saving generated xml file
 $xml_file = $xml_user_info -> asXML('CalgarySchools.xml');
 
+$new_xml_file = file_get_contents("CalgarySchools.xml");
+echo "$new_xml_file";
 // $xmlDoc = new DOMDocument();
 // $xmlDoc->load("CalgarySchools.xml");
 // $xmlElement = $xmlDoc->getElementsBy
