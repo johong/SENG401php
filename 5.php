@@ -1,5 +1,62 @@
 <html>
+
+    <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        // function returnCoordinateInfo(x1, y1, x2, y2) {
+        function returnCoordinateInfo(inputValues) {
+            var xmlhttp = new XMLHttpRequest();
+            var x1 = inputValues[0].value;
+            var y1 = inputValues[1].value;
+            var x2 = inputValues[2].value;
+            var y2 = inputValues[3].value;
+            var coordinates = "x1=" + x1 + "&y1=" + y1 + "&x2=" + x2 + "&y2=" + y2;
+
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("calculateCoordinates").innerHTML = this.responseText;
+                    // document.getElementById("calculateCoordinates").innerHTML = "test";
+                    console.log(this.reponseText);
+                }
+
+            };
+            console.log("5_get.php?" + coordinates);
+
+            xmlhttp.open("GET", "5_get.php?" + coordinates, true);
+            xmlhttp.send();
+        }
+    </script>
+    </head>
+
     <body>
-    
+        <h1>Please enter coordinates:</h1>
+        <form id="getCoordinates" onsubmit="returnCoordinateInfo(document.getElementById('getCoordinates'))">
+            first x: <input type="number" name="x1">
+            first y: <input type="number" name="y1">
+            <br/><br/>
+            second x: <input type="number" name="x2">
+            second y: <input type="number" name="y2">
+            <br/><br/>
+            <input type="submit">
+        </form>
+
+        <div id="calculateCoordinates"></div>
+
+    <script>
+    $(function() {
+        $('form').submit(function() {
+            $.ajax({
+                type: 'POST',
+                url: '5_get.php',
+                data: { x1: this[0].value,
+                        y1: this[1].value,
+                        x2: this[2].value,
+                        y2: this[3].value }
+            });
+            return false;
+        }); 
+    })
+    </script>
     </body>
+    
 </html>
