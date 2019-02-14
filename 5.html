@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Enter coordinates of two points:</h2>
+<script>
+function validateForm() {
+  var p1 = document.forms["myForm"]["Point1"].value;
+  var p2 = document.forms["myForm"]["Point2"].value;
+  if (p1 == "" || p2 == "") {
+    alert("Both points must be filled out");
+    return false;
+  } 
+  else
+  coordinateTools();  
+}
+</script>
+</head>
+
+<body>
+<form name="myForm" onsubmit="return validateForm()" method="post">
+  Point 1:<br>
+  <input id = "Point1" type="text" name="Point1">
+  <br>
+  Point 2:<br>
+  <input id = "Point2" type="text" name="Point2">
+  <br><br>
+  <input type="button" value="Find Distance" onclick = "validateForm()">
+</form>
+
+<p id="info"><p>
+
+<script>
+function coordinateTools() {
+  var p1 = document.forms["myForm"]["Point1"].value;
+  var p2 = document.forms["myForm"]["Point2"].value;
+  var getString = "coordTools.php?p1=" + p1 + "&p2=" + p2;
+  document.getElementById("info").innerHTML = getString;
+var xhttp;
+  xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+	document.getElementById("info").innerHTML = this.responseText;
+    }
+  };
+  //start php
+  xhttp.open("GET", getString, true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send();
+  }
+</script>
+
+</body>
+</html>
