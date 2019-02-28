@@ -1,0 +1,151 @@
+<html>
+  <head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+    function createButtons() {
+      var showImageButton = document.createElement("button");
+      var showJsonButton = document.createElement("button");
+      var flickrDiv = document.createElement("div");
+
+      if (document.getElementById("image") === null) {
+        showImageButton.id = "image";
+        showImageButton.innerHTML = "Show Image";
+
+        document.getElementById("returnMessage").appendChild(showImageButton);
+        document.getElementById("image").setAttribute('onclick', "getFlickrImages(document.getElementById('getCoordinates'))");
+
+        showJsonButton.id = "json";
+        showJsonButton.innerHTML = "Show Json";
+        document.getElementById("returnMessage").appendChild(showJsonButton);
+        document.getElementById("json").setAttribute('onclick', "getFlickrJson(document.getElementById('getCoordinates'))");
+
+        flickrDiv.id = "flickrAPI";
+        document.getElementById("returnMessage").appendChild(flickrDiv);
+      }
+    }
+
+    function getFlickrImages(inputValues) {
+      var xmlhttp = new XMLHttpRequest();
+      var x1 = inputValues[0].value;
+      var y1 = inputValues[1].value;
+      var x2 = inputValues[2].value;
+      var y2 = inputValues[3].value;
+      var coordinates = "x1=" + x1 + "&y1=" + y1 + "&x2=" + x2 + "&y2=" + y2 + "&type=image";
+
+      document.getElementById("flickrAPI").innerHTML = "Retrieving images...";
+
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("flickrAPI").innerHTML = this.responseText;
+        }
+      };
+      xmlhttp.open("GET", "flickrapi.php?" + coordinates, true);
+      xmlhttp.send();
+    }
+
+    function getFlickrJson(inputValues) {
+      var xmlhttp = new XMLHttpRequest();
+      var x1 = inputValues[0].value;
+      var y1 = inputValues[1].value;
+      var x2 = inputValues[2].value;
+      var y2 = inputValues[3].value;
+      var coordinates = "x1=" + x1 + "&y1=" + y1 + "&x2=" + x2 + "&y2=" + y2 + "&type=json";
+
+      document.getElementById("flickrAPI").innerHTML = "Retrieving json...";
+
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("flickrAPI").innerHTML = this.responseText;
+        }
+      };
+      xmlhttp.open("GET", "flickrapi.php?" + coordinates, true);
+      xmlhttp.send();
+    }
+  </script>
+  </head>
+
+  <body>
+    <h1>Please enter coordinates:</h1>
+    <form id="getCoordinates" onsubmit="createButtons()">
+      <h4>Bottom left corner</h4>
+      Longitude 1: <input type="number" id="x1">
+      Latitude 1: <input type="number" id="y1">
+      <br/>
+      <h4>Top right corner</h4>
+      Longitude 2: <input type="number" id="x2">
+      Latitude 2: <input type="number" id="y2">
+      <br/><br/>
+      <input type="submit">
+    </form>
+
+    <div id="returnMessage"></div>
+
+    <script>
+      $("input[type=submit]").attr("disabled", "disabled");
+
+      validated = function() {
+        if (($("#x1").val().length === 0) ||
+            ($("#y1").val().length === 0) ||
+            ($("#x2").val().length === 0) ||
+            ($("#y2").val().length === 0)) {
+
+          $("#returnMessage").html("");
+          return false;
+        } else {
+          var x1 = parseInt($("#x1").val());
+          var y1 = parseInt($("#y1").val());
+          var x2 = parseInt($("#x2").val());
+          var y2 = parseInt($("#y2").val());
+
+          if ((x1 < -180) || (x1 > 180) ||
+              (y1 < -90) || (y1 > 90) ||
+              (x2 < -180) || (x2 > 180) ||
+              (y2 < -90) || (y2 > 90)) {
+
+            $("#returnMessage").html("Longitude values must be within the range '-180' to '180' and Latitude values must be within the range '-90' to '90'");
+            return false;
+
+          } else {
+            if ((x1 >= x2) || (y1 >= y2)) {
+
+              $("#returnMessage").html("The bottom left corner values must both be smaller than the top right corner values");
+              return false;
+            }
+          }
+        }
+
+        $("#returnMessage").html("");
+        return true;
+      }
+
+
+      $(":input").change(function() {
+        if (validated()) {
+          $("input[type=submit]").removeAttr("disabled");
+        } else {
+          $("input[type=submit]").attr("disabled", "disabled");
+        }
+      });
+
+      $(function() {
+        $('form').submit(function() {
+          $.ajax({});
+          return false;
+        });
+      });
+
+      $("#image, #json").click(function() {
+        $.ajax({
+        type:  'GET',
+        url: 'flickrapi.php',
+        data: { x1: this[0].value,
+                y1: this[1].value,
+                x2: this[2].value,
+                y2: this[3].value }
+        });
+        return false;
+      });
+    </script>
+  </body>
+
+</html>
