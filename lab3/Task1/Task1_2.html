@@ -1,0 +1,79 @@
+<html>
+<head>
+<script>
+
+// gets + returns combined value of TableAttr checkboxes
+function getTableAttr(){
+  var checkedValue = 0;
+  var inputElements = document.getElementsByClassName('TableAttr');
+
+  for(var i=0; i < inputElements.length; i++){
+        if(inputElements[i].checked){
+             checkedValue |= parseInt(inputElements[i].value);
+        }
+  }
+  return checkedValue.toString(10);
+}
+
+
+// sends AJAX Request to PHP code
+function sendRequest(sWord, format, tableAttr) {
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      if(format == "XML"){
+        document.getElementById("txtResponse").innerHTML =
+            "<textarea rows=\"20\" cols=\"40\" style=\"border:none;\">"
+            + (this.responseText).toString() + "</textarea>";
+      }else{
+        document.getElementById("txtResponse").innerHTML = (this.responseText).toString();
+      }
+    }
+  };
+
+  xmlhttp.open("GET", "Task1_2.php?Sector=" + sWord + "&Format=" +
+                      format + "&TableAttr=" + tableAttr, true);
+  xmlhttp.send();
+}
+
+</script>
+</head>
+
+<body>
+  <h1>PostgreSQL Search: Task 1.2</h1>
+  <h2>Please enter the sector you want to search for:</h2>
+  <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+    Sector: <select id="sWord">
+      <option value="NW">NW</option>
+      <option value="NE">NE</option>
+      <option value="SW">SW</option>
+      <option value="SE">SE</option>
+    </select><br>
+    Format: <select id="format">
+      <option value="CSV">CSV</option>
+      <option value="JSON">JSON</option>
+      <option value="XML">XML</option>
+      <option value="Table">Table</option>
+    </select><br>
+    Table Attributes (if table selected) :<br>
+    <input type="checkbox" class="TableAttr" id="Name" value="256">Name<br>
+    <input type="checkbox" class="TableAttr" id="Type" value="128">Type<br>
+    <input type="checkbox" class="TableAttr" id="Sector" value="64">Sector<br>
+    <input type="checkbox" class="TableAttr" id="Address" value="32">Address<br>
+    <input type="checkbox" class="TableAttr" id="City" value="16">City<br>
+    <input type="checkbox" class="TableAttr" id="Province" value="8">Province<br>
+    <input type="checkbox" class="TableAttr" id="Postal Code" value="4">Postal Code<br>
+    <input type="checkbox" class="TableAttr" id="Longitude" value="2">Longitude<br>
+    <input type="checkbox" class="TableAttr" id="Latitude" value="1">Latitude<br>
+
+    <br><button type="button" onclick="sendRequest(
+                    document.getElementById('sWord').value,
+                    document.getElementById('format').value,
+                    getTableAttr());">
+        Submit</button>
+  </form>
+
+  <div id="txtResponse"><b>School results will be here...</b></div>
+
+</body>
+</html>
